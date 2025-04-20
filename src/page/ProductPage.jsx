@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Header from "../components/Header";
-import Slider from "../components/Slider";
-import Banner from "../components/Banner";
+import Header2 from "../components/Header2";
 import Cart from "../components/Cart";
 import Model1 from "../components/Model1";
 import { useCart } from "../context/CartContext";
 
-const HomePage = () => {
+const ProductPage = () => {
   const { addToCart } = useCart();
 
   const [products, setProducts] = useState([]);
@@ -45,10 +43,8 @@ const HomePage = () => {
 
   return (
     <>
-      <Header />
+      <Header2 />
       <Cart />
-      <Slider />
-      <Banner />
       {/* Product */}
       <section className="bg0 p-t-23 p-b-140">
         <div className="container">
@@ -365,4 +361,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ProductPage;

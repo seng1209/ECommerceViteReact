@@ -2,42 +2,37 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const BrandList = () => {
-  const [brands, setBrands] = useState([]);
-  const getBrands = async () => {
+const PaymentMethodList = () => {
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const getPaymentMethods = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `brands`);
-      setBrands(results.data.data);
-      //   console.log(results.data.data);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `payment_methods`
+      );
+      setPaymentMethods(results.data.data);
     } catch (error) {
-      if (error.response) {
-        console.log("Error Repsonse: " + error.response.data);
-        console.log("Status Code: " + error.response.status);
-      } else {
-        console.log("Error: " + error.message);
-      }
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    getBrands();
+    getPaymentMethods();
   }, []);
 
-  const handleDeleteBrand = async (brand_id, image_name) => {
+  const handleDelete = async (name, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE +
+          `delete-image/${paymentMethodResponse.data.data.image_name}`
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `brands/${brand_id}`
+        import.meta.env.VITE_API_BASE + `payment_methods/${name}`
       );
-      if (result) {
-        window.location.reload();
-      }
+      result ? window.location.reload() : "";
     } catch (error) {
       if (error.response) {
-        console.log("Error Resopnse: " + error.response.data);
-        console.log("Status Code: " + error.response.status);
+        console.log("Error Response: " + error.response.data);
+        console.log("Status Code: " + error.response.stutus);
       } else {
         console.log("Error: " + error.message);
       }
@@ -47,40 +42,40 @@ const BrandList = () => {
   return (
     <div className="container-fluid">
       <Link to="create" className="btn btn-primary m-1">
-        Create new Brand
+        Create new Payment Method
       </Link>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Image</th>
-            <th scope="col">Brand</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
             <th scope="col">Description</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {brands?.map((obj) => {
+          {paymentMethods?.map((obj) => {
             return (
-              <tr key={obj.brand_id}>
-                <td>{obj.brand_id}</td>
+              <tr>
+                <td>{obj.payment_method_id}</td>
                 <td>
                   <img src={obj.image} alt={obj.image} width="200px" />
                 </td>
-                <td>{obj.brand}</td>
+                <td>{obj.name}</td>
+                <td>{obj.price}</td>
                 <td>{obj.description}</td>
                 <td className="d-flex">
                   <Link
-                    to={`update/${obj.brand_id}`}
+                    to={`update/${obj.name}`}
                     className="btn btn-warning m-1"
                   >
                     Update
                   </Link>
                   <button
                     className="btn btn-danger m-1"
-                    onClick={() =>
-                      handleDeleteBrand(obj.brand_id, obj.image_name)
-                    }
+                    onClick={() => handleDelete(obj.name, obj.image_name)}
                   >
                     Delete
                   </button>
@@ -94,4 +89,4 @@ const BrandList = () => {
   );
 };
 
-export default BrandList;
+export default PaymentMethodList;

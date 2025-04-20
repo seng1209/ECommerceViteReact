@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { TbCategoryPlus } from "react-icons/tb";
+import { SiBrandfolder } from "react-icons/si";
+import { AiOutlineProduct } from "react-icons/ai";
+import { AiFillSafetyCertificate } from "react-icons/ai";
+import { FaUserFriends } from "react-icons/fa";
+import { BsBagCheck } from "react-icons/bs";
+import { LuBox } from "react-icons/lu";
+import { FaShippingFast } from "react-icons/fa";
+import { SiAmazonpay } from "react-icons/si";
 
 const Slidebar = () => {
   return (
@@ -51,7 +60,8 @@ const Slidebar = () => {
                   aria-expanded="false"
                 >
                   <span>
-                    <i className="ti ti-layout-dashboard" />
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <TbCategoryPlus size={22} />
                   </span>
                   <span className="hide-menu">Category</span>
                 </Link>
@@ -64,9 +74,136 @@ const Slidebar = () => {
                   aria-expanded="false"
                 >
                   <span>
-                    <i className="ti ti-layout-dashboard" />
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <SiBrandfolder size={22} />
                   </span>
                   <span className="hide-menu">Brand</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/products"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <AiOutlineProduct size={22} />
+                  </span>
+                  <span className="hide-menu">Product</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/roles"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <AiFillSafetyCertificate size={22} />
+                  </span>
+                  <span className="hide-menu">Role</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/users"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <FaUserFriends size={22} />
+                  </span>
+                  <span className="hide-menu">User</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/orders"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <BsBagCheck size={22} />
+                  </span>
+                  <span className="hide-menu">Order</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/order-products"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <LuBox size={22} />
+                  </span>
+                  <span className="hide-menu">Order Products</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/shipment-methods"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <FaShippingFast size={22} />
+                  </span>
+                  <span className="hide-menu">Shipment Method</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/payment-methods"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <SiAmazonpay size={22} />
+                  </span>
+                  <span className="hide-menu">Payment Method</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/shipments"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <FaShippingFast size={22} />
+                  </span>
+                  <span className="hide-menu">Shipment</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/payments"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <SiAmazonpay size={22} />
+                  </span>
+                  <span className="hide-menu">Payment</span>
                 </Link>
               </li>
               <li className="nav-small-cap">

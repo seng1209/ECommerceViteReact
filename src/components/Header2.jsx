@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
-const Header = () => {
+const Header2 = () => {
   const { cartItems } = useCart();
-
   return (
     <>
       {/* Header */}
-      <header>
+      <header className="header-v4">
         {/* Header desktop */}
         <div className="container-menu-desktop">
           {/* Topbar */}
@@ -18,21 +17,25 @@ const Header = () => {
               </div>
               <div className="right-top-bar flex-w h-full">
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
-                  Help &amp; FAQs
+                  {" "}
+                  Help &amp; FAQs{" "}
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
-                  My Account
+                  {" "}
+                  My Account{" "}
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
-                  EN
+                  {" "}
+                  EN{" "}
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
-                  USD
+                  {" "}
+                  USD{" "}
                 </a>
               </div>
             </div>
           </div>
-          <div className="wrap-menu-desktop">
+          <div className="wrap-menu-desktop how-shadow1">
             <nav className="limiter-menu-desktop container">
               {/* Logo desktop */}
               <a href="#" className="logo">
@@ -41,8 +44,8 @@ const Header = () => {
               {/* Menu desktop */}
               <div className="menu-desktop">
                 <ul className="main-menu">
-                  <li className="active-menu">
-                    <Link to="/">Home</Link>
+                  <li>
+                    <Link to={"/"}>Home</Link>
                     {/* <ul className="sub-menu">
                       <li>
                         <a href="index.html">Homepage 1</a>
@@ -55,17 +58,17 @@ const Header = () => {
                       </li>
                     </ul> */}
                   </li>
-                  <li>
-                    <Link to={"product"}>Shop</Link>
+                  <li className="active-menu">
+                    <Link to={"/product"}>Shop</Link>
                   </li>
                   <li className="label1" data-label1="hot">
-                    <Link to={"shopping-cart"}>Features</Link>
+                    <Link to={"/shopping-cart"}>Features</Link>
                   </li>
                   <li>
-                    <Link to="blog">Blog</Link>
+                    <Link to="/blog">Blog</Link>
                   </li>
                   <li>
-                    <Link to="about">About</Link>
+                    <Link to="/about">About</Link>
                   </li>
                   {/* <li>
                     <a href="contact.html">Contact</a>
@@ -85,7 +88,7 @@ const Header = () => {
                 </div>
                 <a
                   href="#"
-                  className="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                  className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
                   data-notify={0}
                 >
                   <i className="zmdi zmdi-favorite-outline" />
@@ -139,16 +142,20 @@ const Header = () => {
             <li>
               <div className="right-top-bar flex-w h-full">
                 <a href="#" className="flex-c-m p-lr-10 trans-04">
-                  Help &amp; FAQs
+                  {" "}
+                  Help &amp; FAQs{" "}
                 </a>
                 <a href="#" className="flex-c-m p-lr-10 trans-04">
-                  My Account
+                  {" "}
+                  My Account{" "}
                 </a>
                 <a href="#" className="flex-c-m p-lr-10 trans-04">
-                  EN
+                  {" "}
+                  EN{" "}
                 </a>
                 <a href="#" className="flex-c-m p-lr-10 trans-04">
-                  USD
+                  {" "}
+                  USD{" "}
                 </a>
               </div>
             </li>
@@ -218,4 +225,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header2;

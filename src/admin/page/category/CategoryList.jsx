@@ -20,14 +20,11 @@ const CategoryList = () => {
     getCategories();
   }, []);
 
-  const handleDeleteCategory = async (category_id) => {
+  const handleDeleteCategory = async (category_id, image_name) => {
     try {
-      const categoryRespone = await axios.get(
-        import.meta.env.VITE_API_BASE + `categories/${category_id}`
-      );
       await axios.delete(
         import.meta.env.VITE_API_BASE +
-          `delete-image/${categoryRespone.data.data.image_name}`
+          `delete-image/${image_name}`
       );
       const result = await axios.delete(
         import.meta.env.VITE_API_BASE + `categories/${category_id}`
@@ -79,7 +76,9 @@ const CategoryList = () => {
                   </Link>
                   <button
                     className="btn btn-danger m-1"
-                    onClick={() => handleDeleteCategory(obj.category_id)}
+                    onClick={() =>
+                      handleDeleteCategory(obj.category_id, obj.image_name)
+                    }
                   >
                     Delete
                   </button>

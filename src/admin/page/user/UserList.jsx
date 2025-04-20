@@ -2,41 +2,34 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const BrandList = () => {
-  const [brands, setBrands] = useState([]);
-  const getBrands = async () => {
+const UserList = () => {
+  const [users, setUsers] = useState([]);
+
+  const getUsers = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `brands`);
-      setBrands(results.data.data);
-      //   console.log(results.data.data);
+      const results = await axios.get(import.meta.env.VITE_API_BASE + `users`);
+      setUsers(results.data.data);
     } catch (error) {
-      if (error.response) {
-        console.log("Error Repsonse: " + error.response.data);
-        console.log("Status Code: " + error.response.status);
-      } else {
-        console.log("Error: " + error.message);
-      }
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    getBrands();
+    getUsers();
   }, []);
 
-  const handleDeleteBrand = async (brand_id, image_name) => {
+  const handleDeleteUser = async (username, image_name) => {
     try {
       await axios.delete(
         import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `brands/${brand_id}`
+        import.meta.env.VITE_API_BASE + `users/${username}`
       );
-      if (result) {
-        window.location.reload();
-      }
+      result ? window.location.reload() : "";
     } catch (error) {
       if (error.response) {
-        console.log("Error Resopnse: " + error.response.data);
+        console.log("Error Response: " + error.response.data);
         console.log("Status Code: " + error.response.status);
       } else {
         console.log("Error: " + error.message);
@@ -46,32 +39,33 @@ const BrandList = () => {
 
   return (
     <div className="container-fluid">
-      <Link to="create" className="btn btn-primary m-1">
-        Create new Brand
-      </Link>
       <table className="table">
         <thead>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">Image</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Description</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Address</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          {brands?.map((obj) => {
+          {users?.map((obj) => {
             return (
-              <tr key={obj.brand_id}>
-                <td>{obj.brand_id}</td>
+              <tr key={obj.user_id}>
+                <td>{obj.user_id}</td>
                 <td>
                   <img src={obj.image} alt={obj.image} width="200px" />
                 </td>
-                <td>{obj.brand}</td>
-                <td>{obj.description}</td>
+                <td>{obj.username}</td>
+                <td>{obj.email}</td>
+                <td>{obj.phone}</td>
+                <td>{obj.address}</td>
                 <td className="d-flex">
                   <Link
-                    to={`update/${obj.brand_id}`}
+                    to={`update/${obj.username}`}
                     className="btn btn-warning m-1"
                   >
                     Update
@@ -79,7 +73,7 @@ const BrandList = () => {
                   <button
                     className="btn btn-danger m-1"
                     onClick={() =>
-                      handleDeleteBrand(obj.brand_id, obj.image_name)
+                      handleDeleteUser(obj.username, obj.image_name)
                     }
                   >
                     Delete
@@ -94,4 +88,4 @@ const BrandList = () => {
   );
 };
 
-export default BrandList;
+export default UserList;
