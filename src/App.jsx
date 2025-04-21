@@ -2,6 +2,7 @@ import { useState } from "react";
 // import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import RoleRoute from "./aurh/RoleRoute";
 
 // customer
 /*
@@ -82,6 +83,9 @@ import CreateShipment from "./admin/page/shipment/CreateShipment";
 import UpdateShipment from "./admin/page/shipment/UpdateShipment";
 // context
 import { CartProvider } from "./context/CartContext";
+// auth
+import Login from "./aurh/Login";
+import Register from "./aurh/Register";
 //
 function App() {
   const page = window.location.href.split("/")[3];
@@ -113,103 +117,271 @@ function App() {
                 <div className="container-fluid">
                   <Routes>
                     <Route path="/admin">
-                      <Route path="" element={<Dashboard />} />
+                      <Route
+                        path=""
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <Dashboard />
+                          </RoleRoute>
+                        }
+                      />
 
-                      <Route path="categories" element={<CategoryList />} />
+                      <Route
+                        path="categories"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CategoryList />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="categories/create"
-                        element={<CreateCategory />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateCategory />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="categories/update/:category_id"
-                        element={<UpdateCategory />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateCategory />
+                          </RoleRoute>
+                        }
                       />
-                      <Route path="brands" element={<BrandList />} />
-                      <Route path="brands/create" element={<CreateBrand />} />
+                      <Route
+                        path="brands"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <BrandList />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="brands/create"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateBrand />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="brands/update/:brand_id"
-                        element={<UpdateBrand />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateBrand />
+                          </RoleRoute>
+                        }
                       />
-                      <Route path="products" element={<ProductList />} />
+                      <Route
+                        path="products"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <ProductList />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="products/create"
-                        element={<CreateProduct />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateProduct />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="products/update/:product_id"
-                        element={<UpdateProduct />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateProduct />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="shipment-methods"
-                        element={<ShipmentMethodList />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <ShipmentMethodList />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="shipment-methods/create"
-                        element={<CreateShipmentMethod />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateShipmentMethod />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="shipment-methods/update/:name"
-                        element={<UpdateShipmentMethod />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateShipmentMethod />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="payment-methods"
-                        element={<PaymentMethodList />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <PaymentMethodList />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="payment-methods/create"
-                        element={<CreatePaymentMethod />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreatePaymentMethod />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="payment-methods/update/:name"
-                        element={<UpdatePaymentMethod />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdatePaymentMethod />
+                          </RoleRoute>
+                        }
                       />
-                      <Route path="roles" element={<RoleList />} />
-                      <Route path="roles/create" element={<CreateRole />} />
+                      <Route
+                        path="roles"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <RoleList />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="roles/create"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateRole />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="roles/update/:role_name"
-                        element={<UpdateRole />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateRole />
+                          </RoleRoute>
+                        }
                       />
-                      <Route path="users" element={<UserList />} />
-                      <Route path="users/create" element={<CreateUser />} />
+                      <Route
+                        path="users"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UserList />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="users/create"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateUser />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="users/update/:username"
-                        element={<UpdateUser />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateUser />
+                          </RoleRoute>
+                        }
                       />
-                      <Route path="orders" element={<OrderList />} />
-                      <Route path="orders/create" element={<CreateOrder />} />
+                      <Route
+                        path="orders"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <OrderList />
+                          </RoleRoute>
+                        }
+                      />
+                      <Route
+                        path="orders/create"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateOrder />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="orders/update/:order_id"
-                        element={<UpdateOrder />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateOrder />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="order-products"
-                        element={<OrderProductsList />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <OrderProductsList />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="order-products/create"
-                        element={<CreateOrderProducts />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateOrderProducts />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="order-products/update/:order_detail_id"
-                        element={<UpdateOrderProducts />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateOrderProducts />
+                          </RoleRoute>
+                        }
                       />
-                      <Route path="payments" element={<PaymentList />} />
+                      <Route
+                        path="payments"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <PaymentList />
+                          </RoleRoute>
+                        }
+                      />
                       <Route
                         path="payments/create"
-                        element={<CreatePayment />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreatePayment />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="payments/update/:payment_id"
-                        element={<UpdatePayment />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdatePayment />
+                          </RoleRoute>
+                        }
                       />
                       <Route path="shipments" element={<ShipmentList />} />
                       <Route
                         path="shipments/create"
-                        element={<CreateShipment />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <CreateShipment />
+                          </RoleRoute>
+                        }
                       />
                       <Route
                         path="shipments/update/:shipment_id"
-                        element={<UpdateShipment />}
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <UpdateShipment />
+                          </RoleRoute>
+                        }
                       />
                     </Route>
                   </Routes>
@@ -221,6 +393,8 @@ function App() {
           <>
             {/* customer */}
             <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               <Route path="/">
                 <Route path="" element={<HomePage />} />
                 <Route path="product" element={<ProductPage />} />

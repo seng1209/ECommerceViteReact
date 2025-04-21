@@ -84,7 +84,9 @@ const Header2 = () => {
                   className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
                   data-notify={cartItems.length}
                 >
-                  <i className="zmdi zmdi-shopping-cart" />
+                  <Link to={"/shopping-cart"} className="text-black">
+                    <i className="zmdi zmdi-shopping-cart" />
+                  </Link>
                 </div>
                 <a
                   href="#"

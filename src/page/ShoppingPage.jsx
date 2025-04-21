@@ -1,10 +1,41 @@
 import { useState, useEffect } from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import axios from "axios";
 import Header2 from "../components/Header2";
 import Cart from "../components/Cart";
 import Breadcrumb from "../components/Breadcrumb";
 import { useCart } from "../context/CartContext";
+import PayPayButton from "../paypal/PayPalButton";
 
 const ShoppingPage = () => {
+  const cities = [
+    "Phnom Penh",
+    "Banteay Meanchey",
+    "Battambang",
+    "Kampong Cham",
+    "Kampong Chhnang",
+    "Kampong Speu",
+    "Kampong Thom",
+    "Kampot",
+    "Kandal",
+    "Koh Kong",
+    "Kep",
+    "Kratíe",
+    "Mondulkiri",
+    "Oddar Meanchey",
+    "Pailin",
+    "Preah Sihanouk",
+    "Preah Vihear",
+    "Pursat",
+    "Prey Veng",
+    "Ratanakiri",
+    "Siem Reap",
+    "Stung Treng",
+    "Svay Rieng",
+    "Takéo",
+    "Tbong Khmum",
+  ];
+
   const {
     cartItems,
     incrementQuantity,
@@ -12,6 +43,118 @@ const ShoppingPage = () => {
     getTotalPrice,
     removeFromCart,
   } = useCart();
+
+  const [order, setOrder] = useState([]);
+  const [orderProduct, setOrderProduct] = useState([]);
+  const [shipment, setShipment] = useState([]);
+  const [payment, setPayment] = useState([]);
+  const user_id = 1;
+
+  const [shipmentMethods, setShipmentMethods] = useState([]);
+
+  const [shipmentMethod, setShipmentMethod] = useState();
+
+  const [shipmentPrice, setShipmentPrice] = useState(0);
+
+  const handleShipment = (e) => {
+    setShipment({ ...shipment, [e.target.name]: e.target.value });
+    console.log(e.target.name, e.target.value);
+  };
+
+  const getShipmentMethods = async () => {
+    try {
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `shipment_methods`
+      );
+      setShipmentMethods(results.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getShipmentPrice = async (shipment_method_id) => {
+    try {
+      const result = await axios.get(
+        import.meta.env.VITE_API_BASE +
+          `shipment_methods/id/${shipment_method_id}`
+      );
+      setShipmentPrice(result.data.data.price);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getShipmentMethods();
+  }, []);
+
+  const process = async () => {
+    try {
+      const orderDto = {
+        ...order,
+        user_id: user_id,
+        total_amount: getTotalPrice(),
+      };
+      const orderResponse = await axios.post(
+        import.meta.env.VITE_API_BASE + `orders`,
+        orderDto
+      );
+      // console.log(orderDto);
+      let orderProductDto = "";
+      await cartItems.forEach((item) => {
+        orderProductDto = {
+          ...orderProduct,
+          order_id: orderResponse.data.data.order_id,
+          product_id: item.product_id,
+          quantity: item.quantity,
+          amount: Number(item.quantity) * Number(item.price),
+        };
+        // console.log(orderProductDto);
+        axios.post(
+          import.meta.env.VITE_API_BASE + `order-details`,
+          orderProductDto
+        );
+      });
+      const shipmentDto = {
+        ...shipment,
+        user_id: user_id,
+        order_id: orderResponse.data.data.order_id,
+      };
+      // console.log(shipmentDto);
+      const shipemntResponse = await axios.post(
+        import.meta.env.VITE_API_BASE + `shipments`,
+        shipmentDto
+      );
+      // console.log(shipemntResponse);
+      // getShipmentPrice(1);
+      const paymentDto = {
+        ...payment,
+        payment_method_id: 1,
+        order_id: orderResponse.data.data.order_id,
+        amount: getTotalPrice(),
+      };
+      // console.log(paymentDto);
+      const paymentResponse = await axios.post(
+        import.meta.env.VITE_API_BASE + `payments`,
+        paymentDto
+      );
+      setTimeout(function () {
+        localStorage.removeItem("cartItems");
+        window.location.href = "/";
+      }, 500);
+    } catch (error) {
+      if (error.response) {
+        console.log("Error Response: " + error.response.data);
+        error.response.data.forEach((err) => {
+          console.log("error: " + err);
+        });
+        console.log("Status Code: " + error.response.status);
+      } else {
+        console.log("Error: " + error.message);
+      }
+    }
+  };
+
   return (
     <>
       <Header2 />
@@ -133,10 +276,6 @@ const ShoppingPage = () => {
                     <span className="stext-110 cl2"> Shipping: </span>
                   </div>
                   <div className="size-209 p-r-18 p-r-0-sm w-full-ssm">
-                    <p className="stext-111 cl6 p-t-2">
-                      There are no shipping methods available. Please double
-                      check your address, or contact us if you need any help.
-                    </p>
                     <div className="p-t-15">
                       <span className="stext-112 cl8">
                         {" "}
@@ -146,11 +285,13 @@ const ShoppingPage = () => {
                         <select
                           className="form-select"
                           aria-label="Default select example"
+                          name="city"
+                          onChange={(e) => handleShipment(e)}
                         >
-                          <option selected="">Open this select menu</option>
-                          <option value={1}>One</option>
-                          <option value={2}>Two</option>
-                          <option value={3}>Three</option>
+                          <option selected="">City</option>
+                          {cities?.map((city) => {
+                            return <option value={city}>{city}</option>;
+                          })}
                         </select>
 
                         <div className="dropDownSelect2" />
@@ -159,22 +300,29 @@ const ShoppingPage = () => {
                         <input
                           className="stext-111 cl8 plh3 size-111 p-lr-15"
                           type="text"
-                          name="state"
+                          name="street_address"
                           placeholder="State /  country"
+                          onChange={(e) => handleShipment(e)}
                         />
                       </div>
-                      <div className="bor8 bg0 m-b-22">
-                        <input
-                          className="stext-111 cl8 plh3 size-111 p-lr-15"
-                          type="text"
-                          name="postcode"
-                          placeholder="Postcode / Zip"
-                        />
-                      </div>
-                      <div className="flex-w">
-                        <div className="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
-                          Update Totals
-                        </div>
+                      <div className="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                        <select
+                          className="form-select"
+                          aria-label="Default select example"
+                          name="shipment_method_id"
+                          onChange={(e) => handleShipment(e)}
+                        >
+                          <option selected="">Shipment Methods</option>
+                          {shipmentMethods?.map((obj) => {
+                            return (
+                              <option value={obj.shipment_method_id}>
+                                {obj.name}
+                              </option>
+                            );
+                          })}
+                        </select>
+
+                        <div className="dropDownSelect2" />
                       </div>
                     </div>
                   </div>
@@ -184,12 +332,45 @@ const ShoppingPage = () => {
                     <span className="mtext-101 cl2"> Total: </span>
                   </div>
                   <div className="size-209 p-t-1">
-                    <span className="mtext-110 cl2"> $79.65 </span>
+                    <span className="mtext-110 cl2"> ${getTotalPrice()}</span>
                   </div>
                 </div>
-                <button className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                  Proceed to Checkout
-                </button>
+                <PayPalScriptProvider
+                  options={{
+                    "client-id":
+                      "ASap20J61zelC5EsQIkrtwWaNc-j8S4QGoWTIE56nvUGUcgNSM4Hq58Xfpob8h2NShHFIDeK_rcGjyTC",
+                  }}
+                >
+                  <PayPalButtons
+                    style={{ layout: "vertical" }}
+                    createOrder={(data, actions) => {
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: getTotalPrice(),
+                            },
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={(data, actions) => {
+                      return actions.order.capture().then((details) => {
+                        alert(
+                          `Transaction completed by ${details.payer.name.given_name}`
+                        );
+
+                        process();
+
+                        // setTimeout(function () {
+                        //   localStorage.removeItem("cartItems");
+                        //   window.location.href = "/";
+                        // }, 3000);
+                      });
+                    }}
+                  />
+                </PayPalScriptProvider>
+                {/* <PayPayButton subtotal={getTotalPrice().toFixed(2)} /> */}
               </div>
             </div>
           </div>

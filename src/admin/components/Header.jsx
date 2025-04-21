@@ -1,4 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 const Header = () => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("token"); // clear token
+    window.location.href = "/login";
+    // navigate("/login"); // redirect to login
+  };
+
   return (
     <>
       {/*  Header Start */}
@@ -75,12 +85,12 @@ const Header = () => {
                       <i className="ti ti-list-check fs-6" />
                       <p className="mb-0 fs-3">My Task</p>
                     </a>
-                    <a
-                      href="./authentication-login.html"
+                    <button
+                      onClick={logout}
                       className="btn btn-outline-primary mx-3 mt-2 d-block"
                     >
                       Logout
-                    </a>
+                    </button>
                   </div>
                 </div>
               </li>

@@ -3,12 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const CategoryList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [categories, setCategories] = useState([]);
 
   const getCategories = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `categories`
+        import.meta.env.VITE_API_BASE + `categories`,
+        config
       );
       setCategories(results.data.data);
     } catch (err) {
@@ -23,8 +32,7 @@ const CategoryList = () => {
   const handleDeleteCategory = async (category_id, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE +
-          `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
       );
       const result = await axios.delete(
         import.meta.env.VITE_API_BASE + `categories/${category_id}`
