@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateBrand = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [brand, setBrand] = useState([]);
 
   const [file, setFile] = useState();
@@ -28,7 +36,8 @@ const CreateBrand = () => {
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const brandDto = {
           ...brand,
@@ -37,7 +46,8 @@ const CreateBrand = () => {
         };
         const result = await axios.post(
           import.meta.env.VITE_API_BASE + `brands`,
-          brandDto
+          brandDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/brands";

@@ -3,6 +3,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const UpdatePayment = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { payment_id } = useParams();
 
   const [payment, setPayment] = useState([]);
@@ -20,7 +28,8 @@ const UpdatePayment = () => {
     try {
       const result = await axios.put(
         import.meta.env.VITE_API_BASE + `payments/${payment_id}`,
-        payment
+        payment,
+        config
       );
       result ? (window.location.href = "/admin/payments") : "";
     } catch (error) {
@@ -36,7 +45,8 @@ const UpdatePayment = () => {
   const getPayment = async (payment_id) => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `payments/${payment_id}`
+        import.meta.env.VITE_API_BASE + `payments/${payment_id}`,
+        config
       );
       setPayment(result.data.data);
       //   console.log(result.data.data);
@@ -48,7 +58,8 @@ const UpdatePayment = () => {
   const getPaymentMethods = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `payment_methods`
+        import.meta.env.VITE_API_BASE + `payment_methods`,
+        config
       );
       setPaymentMethods(results.data.data);
     } catch (err) {
@@ -58,7 +69,10 @@ const UpdatePayment = () => {
 
   const getOrders = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `orders`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `orders`,
+        config
+      );
       setOrders(results.data.data);
     } catch (err) {
       console.log(err);

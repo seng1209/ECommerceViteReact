@@ -3,11 +3,22 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const UserList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [users, setUsers] = useState([]);
 
   const getUsers = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `users`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `users`,
+        config
+      );
       setUsers(results.data.data);
     } catch (error) {
       console.log(error);
@@ -21,10 +32,12 @@ const UserList = () => {
   const handleDeleteUser = async (username, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`,
+        config
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `users/${username}`
+        import.meta.env.VITE_API_BASE + `users/${username}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (error) {

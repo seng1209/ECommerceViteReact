@@ -3,6 +3,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const UpdateShipmentMethod = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { name } = useParams();
 
   const [shipmentMethod, setShipmentMethod] = useState([]);
@@ -26,20 +34,23 @@ const UpdateShipmentMethod = () => {
       if (!file) {
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `shipment_methods/${name}`,
-          shipmentMethod
+          shipmentMethod,
+          config
         );
         result ? (window.location.href = "/admin/shipment-methods") : "";
       } else {
         await axios.delete(
           import.meta.env.VITE_API_BASE +
-            `delete-image/${shipmentMethod.image_name}`
+            `delete-image/${shipmentMethod.image_name}`,
+          config
         );
         const imageResponse = await axios.post(
           import.meta.env.VITE_API_BASE + `upload-image`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const shipmentMethodDto = {
           ...shipmentMethod,
@@ -48,7 +59,8 @@ const UpdateShipmentMethod = () => {
         };
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `shipment_methods/${name}`,
-          shipmentMethodDto
+          shipmentMethodDto,
+          config
         );
         result ? (window.location.href = "/admin/shipment-methods") : "";
       }
@@ -65,7 +77,8 @@ const UpdateShipmentMethod = () => {
   const getShipmentMethod = async (name) => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `shipment_methods/${name}`
+        import.meta.env.VITE_API_BASE + `shipment_methods/${name}`,
+        config
       );
       setShipmentMethod(result.data.data);
     } catch (error) {

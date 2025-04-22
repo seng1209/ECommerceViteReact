@@ -3,12 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const PaymentList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [payments, setPayments] = useState([]);
 
   const getPayments = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `payments`
+        import.meta.env.VITE_API_BASE + `payments`,
+        config
       );
       setPayments(results.data.data);
     } catch (error) {
@@ -23,7 +32,8 @@ const PaymentList = () => {
   const handleDeletePayment = async (payment_id) => {
     try {
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `payments/${payment_id}`
+        import.meta.env.VITE_API_BASE + `payments/${payment_id}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (err) {

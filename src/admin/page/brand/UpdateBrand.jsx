@@ -3,6 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const CreateBrand = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { brand_id } = useParams();
   const [brand, setBrand] = useState([]);
 
@@ -11,7 +19,8 @@ const CreateBrand = () => {
   const getBeand = async () => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `brands/${brand_id}`
+        import.meta.env.VITE_API_BASE + `brands/${brand_id}`,
+        config
       );
       setBrand(result.data.data);
     } catch (error) {
@@ -45,21 +54,24 @@ const CreateBrand = () => {
       if (!file) {
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `brands/${brand_id}`,
-          brand
+          brand,
+          config
         );
         if (result) {
           window.location.href = "/admin/brands";
         }
       } else {
         await axios.delete(
-          import.meta.env.VITE_API_BASE + `delete-image/${brand.image_name}`
+          import.meta.env.VITE_API_BASE + `delete-image/${brand.image_name}`,
+          config
         );
         const imageResopnse = await axios.post(
           import.meta.env.VITE_API_BASE + `upload-image`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const brandDto = {
           ...brand,
@@ -68,7 +80,8 @@ const CreateBrand = () => {
         };
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `brands/${brand_id}`,
-          brandDto
+          brandDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/brands";

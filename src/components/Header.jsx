@@ -4,6 +4,11 @@ import { useCart } from "../context/CartContext";
 const Header = () => {
   const { cartItems } = useCart();
 
+  const logout = () => {
+    localStorage.removeItem("token"); // clear token
+    window.location.href = "/login";
+  };
+
   return (
     <>
       {/* Header */}
@@ -20,8 +25,8 @@ const Header = () => {
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                   Help &amp; FAQs
                 </a>
-                <a href="#" className="flex-c-m trans-04 p-lr-25">
-                  My Account
+                <a onClick={logout} className="flex-c-m trans-04 p-lr-25">
+                  Logout
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                   EN
@@ -177,13 +182,14 @@ const Header = () => {
               <a href="product.html">Shop</a>
             </li>
             <li>
-              <a
-                href="shoping-cart.html"
+              <Link
+                // href="shoping-cart.html"
+                to={"/shopping-cart"}
                 className="label1 rs1"
                 data-label1="hot"
               >
                 Features
-              </a>
+              </Link>
             </li>
             <li>
               <a href="blog.html">Blog</a>

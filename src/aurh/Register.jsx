@@ -1,10 +1,56 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
+  const [user, setUser] = useState([]);
+
+  const [file, setFile] = useState();
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const handleInputChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const imageResponse = await axios.post(
+        import.meta.env.VITE_API_BASE + `upload-image`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      const userDto = {
+        ...user,
+        image: imageResponse.data.link,
+        image_name: imageResponse.data.filename,
+      };
+      const result = await axios.post(
+        import.meta.env.VITE_API_BASE + `register`,
+        userDto
+      );
+      result ? (window.location.href = "/login") : "";
+    } catch (err) {
+      if (err.response) {
+        console.log("Error Response: " + err.response.data);
+        console.log("Status Code: " + err.response.status);
+      } else {
+        console.log("Error: " + err.message);
+      }
+    }
+  };
+
   return (
     <>
-      {/*  Body Wrapper */}
+      {/* Body Wrapper */}
       <div
         className="page-wrapper"
         id="main-wrapper"
@@ -20,7 +66,7 @@ const Register = () => {
               <div className="col-md-8 col-lg-6 col-xxl-3">
                 <div className="card mb-0">
                   <div className="card-body">
-                    <a
+                    {/* <a
                       href="./index.html"
                       className="text-nowrap logo-img text-center d-block py-3 w-100"
                     >
@@ -30,64 +76,106 @@ const Register = () => {
                         alt=""
                       />
                     </a>
-                    <p className="text-center">Your Social Campaigns</p>
-                    <form>
+                    <p className="text-center">Your Social Campaigns</p> */}
+                    <form onSubmit={(e) => onSubmit(e)}>
+                      {/* Name */}
                       <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputtext1"
-                          className="form-label"
-                        >
+                        <label htmlFor="name" className="form-label">
                           Name
                         </label>
                         <input
                           type="text"
                           className="form-control"
-                          id="exampleInputtext1"
-                          aria-describedby="textHelp"
+                          id="name"
+                          name="username"
+                          onChange={(e) => handleInputChange(e)}
                         />
                       </div>
+
+                      {/* Email */}
                       <div className="mb-3">
-                        <label
-                          htmlFor="exampleInputEmail1"
-                          className="form-label"
-                        >
+                        <label htmlFor="email" className="form-label">
                           Email Address
                         </label>
                         <input
                           type="email"
                           className="form-control"
-                          id="exampleInputEmail1"
-                          aria-describedby="emailHelp"
+                          id="email"
+                          name="email"
+                          onChange={(e) => handleInputChange(e)}
                         />
                       </div>
-                      <div className="mb-4">
-                        <label
-                          htmlFor="exampleInputPassword1"
-                          className="form-label"
-                        >
+
+                      {/* Password */}
+                      <div className="mb-3">
+                        <label htmlFor="password" className="form-label">
                           Password
                         </label>
                         <input
                           type="password"
                           className="form-control"
-                          id="exampleInputPassword1"
+                          id="password"
+                          name="password"
+                          onChange={(e) => handleInputChange(e)}
                         />
                       </div>
-                      <a
-                        href="./index.html"
+
+                      {/* Phone */}
+                      <div className="mb-3">
+                        <label htmlFor="phone" className="form-label">
+                          Phone Number
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="phone"
+                          name="phone"
+                          onChange={(e) => handleInputChange(e)}
+                        />
+                      </div>
+
+                      {/* Address */}
+                      <div className="mb-3">
+                        <label htmlFor="address" className="form-label">
+                          Address
+                        </label>
+                        <textarea
+                          className="form-control"
+                          id="address"
+                          rows="2"
+                          name="address"
+                          onChange={(e) => handleInputChange(e)}
+                        ></textarea>
+                      </div>
+
+                      {/* Upload Image */}
+                      <div className="mb-4">
+                        <label htmlFor="image" className="form-label">
+                          Upload Profile Image
+                        </label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          id="image"
+                          accept="image/*"
+                          name="file"
+                          onChange={(e) => handleFileChange(e)}
+                        />
+                      </div>
+
+                      {/* Submit Button */}
+                      <button
+                        type="submit"
                         className="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"
                       >
                         Sign Up
-                      </a>
+                      </button>
+
                       <div className="d-flex align-items-center justify-content-center">
                         <p className="fs-4 mb-0 fw-bold">
                           Already have an Account?
                         </p>
-                        <Link
-                          className="text-primary fw-bold ms-2"
-                          //   href="./authentication-login.html"
-                          to={"/login"}
-                        >
+                        <Link className="text-primary fw-bold ms-2" to="/login">
                           Sign In
                         </Link>
                       </div>

@@ -3,6 +3,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const UpdateShipment = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { shipment_id } = useParams();
 
   const [shipment, setShipment] = useState([]);
@@ -22,7 +30,8 @@ const UpdateShipment = () => {
     try {
       const result = await axios.put(
         import.meta.env.VITE_API_BASE + `shipments/${shipment_id}`,
-        shipment
+        shipment,
+        config
       );
       result ? (window.location.href = "/admin/shipments") : "";
     } catch (error) {
@@ -38,7 +47,8 @@ const UpdateShipment = () => {
   const getShipment = async (shipment_id) => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `shipments/${shipment_id}`
+        import.meta.env.VITE_API_BASE + `shipments/${shipment_id}`,
+        config
       );
       setShipment(result.data.data);
     } catch (err) {
@@ -49,7 +59,8 @@ const UpdateShipment = () => {
   const getShipmentMethods = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `shipment_methods`
+        import.meta.env.VITE_API_BASE + `shipment_methods`,
+        config
       );
       setShipementMethods(results.data.data);
     } catch (err) {
@@ -59,7 +70,10 @@ const UpdateShipment = () => {
 
   const getOrders = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `orders`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `orders`,
+        config
+      );
       setOrders(results.data.data);
     } catch (err) {
       console.log(err);
@@ -68,7 +82,10 @@ const UpdateShipment = () => {
 
   const getUsers = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `users`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `users`,
+        config
+      );
       setUsers(results.data.data);
     } catch (error) {
       console.log(error);

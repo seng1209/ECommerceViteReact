@@ -107,12 +107,16 @@ function App() {
               data-header-position="fixed"
             >
               {/* Sidebar Start */}
-              <Slidebar />
+              <RoleRoute allowedRoles={["ADMIN"]}>
+                <Slidebar />
+              </RoleRoute>
               {/*  Sidebar End */}
               {/*  Main wrapper */}
               <div className="body-wrapper">
                 {/*  Header Start */}
-                <HeaderAdmin />
+                <RoleRoute allowedRoles={["ADMIN"]}>
+                  <HeaderAdmin />
+                </RoleRoute>
                 {/*  Header End */}
                 <div className="container-fluid">
                   <Routes>
@@ -398,13 +402,25 @@ function App() {
               <Route path="/">
                 <Route path="" element={<HomePage />} />
                 <Route path="product" element={<ProductPage />} />
-                <Route path="shopping-cart" element={<ShoppingPage />} />
+                <Route
+                  path="shopping-cart"
+                  element={
+                    <RoleRoute allowedRoles={["CUSTOMER", "USER"]}>
+                      <ShoppingPage />
+                    </RoleRoute>
+                  }
+                />
                 <Route path="blog" element={<BlogPage />} />
                 <Route path="about" element={<AboutPage />} />
                 <Route path="product-detail" element={<ProductDetail />} />
               </Route>
             </Routes>
-            <Footer />
+            {/* <Footer /> */}
+            {page != "admin" && page != "login" && page != "register" ? (
+              <Footer />
+            ) : (
+              ""
+            )}
             {/* <Model1 /> */}
           </>
         )}

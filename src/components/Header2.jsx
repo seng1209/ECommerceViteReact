@@ -3,6 +3,10 @@ import { useCart } from "../context/CartContext";
 
 const Header2 = () => {
   const { cartItems } = useCart();
+  const logout = () => {
+    localStorage.removeItem("token"); // clear token
+    window.location.href = "/login";
+  };
   return (
     <>
       {/* Header */}
@@ -20,9 +24,9 @@ const Header2 = () => {
                   {" "}
                   Help &amp; FAQs{" "}
                 </a>
-                <a href="#" className="flex-c-m trans-04 p-lr-25">
+                <a onClick={logout} className="flex-c-m trans-04 p-lr-25">
                   {" "}
-                  My Account{" "}
+                  Logout
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                   {" "}

@@ -3,12 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const PaymentList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [shipments, setShipments] = useState([]);
 
   const getShipments = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `shipments`
+        import.meta.env.VITE_API_BASE + `shipments`,
+        config
       );
       setShipments(results.data.data);
     } catch (error) {
@@ -23,7 +32,8 @@ const PaymentList = () => {
   const handleDeleteShipment = async (shipment_id) => {
     try {
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `shipments/${shipment_id}`
+        import.meta.env.VITE_API_BASE + `shipments/${shipment_id}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (err) {

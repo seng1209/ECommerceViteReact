@@ -3,11 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const PaymentMethodList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [paymentMethods, setPaymentMethods] = useState([]);
+
   const getPaymentMethods = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `payment_methods`
+        import.meta.env.VITE_API_BASE + `payment_methods`,
+        config
       );
       setPaymentMethods(results.data.data);
     } catch (error) {
@@ -22,11 +32,12 @@ const PaymentMethodList = () => {
   const handleDelete = async (name, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE +
-          `delete-image/${paymentMethodResponse.data.data.image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`,
+        config
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `payment_methods/${name}`
+        import.meta.env.VITE_API_BASE + `payment_methods/${name}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (error) {

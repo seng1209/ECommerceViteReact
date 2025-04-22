@@ -3,6 +3,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const UpdatePaymentMethod = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { name } = useParams();
 
   const [paymentMethod, setPaymentMethod] = useState([]);
@@ -26,20 +34,23 @@ const UpdatePaymentMethod = () => {
       if (!file) {
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `payment_methods/${name}`,
-          paymentMethod
+          paymentMethod,
+          config
         );
         result ? (window.location.href = "/admin/payment-methods") : "";
       } else {
         await axios.delete(
           import.meta.env.VITE_API_BASE +
-            `delete-image/${paymentMethod.image_name}`
+            `delete-image/${paymentMethod.image_name}`,
+          config
         );
         const imageResponse = await axios.post(
           import.meta.env.VITE_API_BASE + `upload-image`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const paymentMethodDto = {
           ...paymentMethod,
@@ -48,7 +59,8 @@ const UpdatePaymentMethod = () => {
         };
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `payment_methods/${name}`,
-          paymentMethodDto
+          paymentMethodDto,
+          config
         );
         result ? (window.location.href = "/admin/payment-methods") : "";
       }
@@ -65,7 +77,8 @@ const UpdatePaymentMethod = () => {
   const getPaymentMethod = async (name) => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `payment_methods/${name}`
+        import.meta.env.VITE_API_BASE + `payment_methods/${name}`,
+        config
       );
       setPaymentMethod(result.data.data);
     } catch (error) {

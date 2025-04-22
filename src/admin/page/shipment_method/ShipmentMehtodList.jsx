@@ -3,12 +3,21 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const ShipmentMethodList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [shipmentMethods, setShipmentMethods] = useState([]);
 
   const getShipmentMethods = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `shipment_methods`
+        import.meta.env.VITE_API_BASE + `shipment_methods`,
+        config
       );
       //   console.log(results.data.data);
       setShipmentMethods(results.data.data);
@@ -29,10 +38,12 @@ const ShipmentMethodList = () => {
   const handleDelete = async (name, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`,
+        config
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `shipment_methods/${name}`
+        import.meta.env.VITE_API_BASE + `shipment_methods/${name}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (error) {

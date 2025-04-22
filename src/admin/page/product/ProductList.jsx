@@ -3,12 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const ProductList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [products, setProducts] = useState([]);
 
   const getProducts = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `products`
+        import.meta.env.VITE_API_BASE + `products`,
+        config
       );
       setProducts(results.data.data);
     } catch (error) {
@@ -28,10 +37,12 @@ const ProductList = () => {
   const handleDeleteProduct = async (product_id, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`,
+        config
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `products/${product_id}`
+        import.meta.env.VITE_API_BASE + `products/${product_id}`,
+        config
       );
       if (result) {
         window.location.reload();

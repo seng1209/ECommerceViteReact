@@ -3,11 +3,22 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const OrderList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `orders`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `orders`,
+        config
+      );
       setOrders(results.data.data);
     } catch (error) {
       console.log(error);
@@ -21,7 +32,8 @@ const OrderList = () => {
   const handleDeleteOrder = async (order_id) => {
     try {
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `orders/${order_id}`
+        import.meta.env.VITE_API_BASE + `orders/${order_id}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (error) {

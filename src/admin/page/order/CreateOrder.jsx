@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateOrder = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [users, setUsers] = useState([]);
 
   const [order, setOrder] = useState([]);
@@ -15,7 +23,8 @@ const CreateOrder = () => {
     try {
       const result = await axios.post(
         import.meta.env.VITE_API_BASE + `orders`,
-        order
+        order,
+        config
       );
       result ? (window.location.href = "/admin/orders") : "";
     } catch (error) {
@@ -30,7 +39,10 @@ const CreateOrder = () => {
 
   const getUsers = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `users`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `users`,
+        config
+      );
       setUsers(results.data.data);
     } catch (error) {
       console.log(error);

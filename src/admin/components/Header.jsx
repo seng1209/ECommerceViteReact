@@ -6,7 +6,6 @@ const Header = () => {
   const logout = () => {
     localStorage.removeItem("token"); // clear token
     window.location.href = "/login";
-    // navigate("/login"); // redirect to login
   };
 
   return (

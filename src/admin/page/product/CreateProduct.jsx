@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateProduct = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [product, setProduct] = useState([]);
 
   const [brands, setBrands] = useState([]);
@@ -11,7 +19,8 @@ const CreateProduct = () => {
   const getCategories = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `categories`
+        import.meta.env.VITE_API_BASE + `categories`,
+        config
       );
       setCategories(results.data.data);
     } catch (err) {
@@ -21,7 +30,10 @@ const CreateProduct = () => {
 
   const getBrands = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `brands`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `brands`,
+        config
+      );
       setBrands(results.data.data);
     } catch (err) {
       console.log(err);
@@ -57,17 +69,18 @@ const CreateProduct = () => {
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const productDto = {
           ...product,
           image: imageResponse.data.link,
           image_name: imageResponse.data.filename,
         };
-        console.log(productDto);
         const result = await axios.post(
           import.meta.env.VITE_API_BASE + `products`,
-          productDto
+          productDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/products";

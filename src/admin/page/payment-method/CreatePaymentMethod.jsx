@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreatePaymentMethod = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [paymentMethod, setPaymentMethod] = useState([]);
 
   const [file, setFile] = useState();
@@ -28,7 +36,8 @@ const CreatePaymentMethod = () => {
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const paymentMethodDto = {
           ...paymentMethod,
@@ -37,7 +46,8 @@ const CreatePaymentMethod = () => {
         };
         const result = await axios.post(
           import.meta.env.VITE_API_BASE + `payment_methods`,
-          paymentMethodDto
+          paymentMethodDto,
+          config
         );
         result ? (window.location.href = "/admin/payment-methods") : "";
       }

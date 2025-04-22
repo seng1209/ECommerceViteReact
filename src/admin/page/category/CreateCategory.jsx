@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateCategory = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [category, setCategory] = useState([]);
 
   const [file, setFile] = useState();
@@ -28,7 +36,8 @@ const CreateCategory = () => {
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const categoryDto = {
           ...category,
@@ -37,7 +46,8 @@ const CreateCategory = () => {
         };
         const result = await axios.post(
           import.meta.env.VITE_API_BASE + "categories",
-          categoryDto
+          categoryDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/categories";

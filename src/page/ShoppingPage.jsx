@@ -6,8 +6,19 @@ import Cart from "../components/Cart";
 import Breadcrumb from "../components/Breadcrumb";
 import { useCart } from "../context/CartContext";
 import PayPayButton from "../paypal/PayPalButton";
+import { jwtDecode } from "jwt-decode";
 
 const ShoppingPage = () => {
+  const token = localStorage.getItem("token");
+
+  const decode = jwtDecode(token);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const cities = [
     "Phnom Penh",
     "Banteay Meanchey",
@@ -48,7 +59,7 @@ const ShoppingPage = () => {
   const [orderProduct, setOrderProduct] = useState([]);
   const [shipment, setShipment] = useState([]);
   const [payment, setPayment] = useState([]);
-  const user_id = 1;
+  let user_id = decode.sub;
 
   const [shipmentMethods, setShipmentMethods] = useState([]);
 
@@ -64,7 +75,8 @@ const ShoppingPage = () => {
   const getShipmentMethods = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `shipment_methods`
+        import.meta.env.VITE_API_BASE + `shipment_methods`,
+        config
       );
       setShipmentMethods(results.data.data);
     } catch (err) {
@@ -76,7 +88,8 @@ const ShoppingPage = () => {
     try {
       const result = await axios.get(
         import.meta.env.VITE_API_BASE +
-          `shipment_methods/id/${shipment_method_id}`
+          `shipment_methods/id/${shipment_method_id}`,
+        config
       );
       setShipmentPrice(result.data.data.price);
     } catch (err) {
@@ -97,7 +110,8 @@ const ShoppingPage = () => {
       };
       const orderResponse = await axios.post(
         import.meta.env.VITE_API_BASE + `orders`,
-        orderDto
+        orderDto,
+        config
       );
       // console.log(orderDto);
       let orderProductDto = "";
@@ -112,7 +126,8 @@ const ShoppingPage = () => {
         // console.log(orderProductDto);
         axios.post(
           import.meta.env.VITE_API_BASE + `order-details`,
-          orderProductDto
+          orderProductDto,
+          config
         );
       });
       const shipmentDto = {
@@ -123,7 +138,8 @@ const ShoppingPage = () => {
       // console.log(shipmentDto);
       const shipemntResponse = await axios.post(
         import.meta.env.VITE_API_BASE + `shipments`,
-        shipmentDto
+        shipmentDto,
+        config
       );
       // console.log(shipemntResponse);
       // getShipmentPrice(1);
@@ -136,7 +152,8 @@ const ShoppingPage = () => {
       // console.log(paymentDto);
       const paymentResponse = await axios.post(
         import.meta.env.VITE_API_BASE + `payments`,
-        paymentDto
+        paymentDto,
+        config
       );
       setTimeout(function () {
         localStorage.removeItem("cartItems");

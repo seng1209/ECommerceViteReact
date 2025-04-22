@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateShipmentMethod = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [shipmentMethod, setShipmentMethod] = useState([]);
 
   const [file, setFile] = useState();
@@ -28,7 +36,8 @@ const CreateShipmentMethod = () => {
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const shipmentMethodDto = {
           ...shipmentMethod,
@@ -37,7 +46,8 @@ const CreateShipmentMethod = () => {
         };
         const result = await axios.post(
           import.meta.env.VITE_API_BASE + `shipment_methods`,
-          shipmentMethodDto
+          shipmentMethodDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/shipment-methods";

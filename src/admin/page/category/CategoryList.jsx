@@ -32,10 +32,12 @@ const CategoryList = () => {
   const handleDeleteCategory = async (category_id, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`,
+        config
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `categories/${category_id}`
+        import.meta.env.VITE_API_BASE + `categories/${category_id}`,
+        config
       );
       if (result) {
         window.location.reload();

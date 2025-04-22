@@ -3,13 +3,22 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const UpdateCategory = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { category_id } = useParams();
   const [category, setCategory] = useState([]);
 
   const getCategory = async () => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `categories/${category_id}`
+        import.meta.env.VITE_API_BASE + `categories/${category_id}`,
+        config
       );
       setCategory(result.data.data);
       // console.log(result.data.data);
@@ -46,21 +55,24 @@ const UpdateCategory = () => {
       if (!file) {
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `categories/${category_id}`,
-          category
+          category,
+          config
         );
         if (result) {
           window.location.href = "/admin/categories";
         }
       } else {
         await axios.delete(
-          import.meta.env.VITE_API_BASE + `delete-image/${category.image_name}`
+          import.meta.env.VITE_API_BASE + `delete-image/${category.image_name}`,
+          config
         );
         const imageRespone = await axios.post(
           import.meta.env.VITE_API_BASE + "upload-image",
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const categoryDto = {
           ...category,
@@ -69,7 +81,8 @@ const UpdateCategory = () => {
         };
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `categories/${category_id}`,
-          categoryDto
+          categoryDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/categories";

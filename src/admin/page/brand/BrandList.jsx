@@ -3,10 +3,21 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const BrandList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [brands, setBrands] = useState([]);
   const getBrands = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `brands`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `brands`,
+        config
+      );
       setBrands(results.data.data);
       //   console.log(results.data.data);
     } catch (error) {
@@ -26,10 +37,12 @@ const BrandList = () => {
   const handleDeleteBrand = async (brand_id, image_name) => {
     try {
       await axios.delete(
-        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`
+        import.meta.env.VITE_API_BASE + `delete-image/${image_name}`,
+        config
       );
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `brands/${brand_id}`
+        import.meta.env.VITE_API_BASE + `brands/${brand_id}`,
+        config
       );
       if (result) {
         window.location.reload();

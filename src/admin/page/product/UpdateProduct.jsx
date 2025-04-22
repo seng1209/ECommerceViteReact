@@ -3,8 +3,15 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const UpdateProduct = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { product_id } = useParams();
-  //   console.log(product_id);
 
   const [product, setProduct] = useState([]);
 
@@ -15,7 +22,8 @@ const UpdateProduct = () => {
   const getProduct = async (product_id) => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `products/${product_id}`
+        import.meta.env.VITE_API_BASE + `products/${product_id}`,
+        config
       );
       setProduct(result.data.data);
     } catch (err) {
@@ -26,7 +34,8 @@ const UpdateProduct = () => {
   const getCategories = async () => {
     try {
       const results = await axios.get(
-        import.meta.env.VITE_API_BASE + `categories`
+        import.meta.env.VITE_API_BASE + `categories`,
+        config
       );
       setCategories(results.data.data);
     } catch (err) {
@@ -36,7 +45,10 @@ const UpdateProduct = () => {
 
   const getBrands = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `brands`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `brands`,
+        config
+      );
       setBrands(results.data.data);
     } catch (err) {
       console.log(err);
@@ -68,31 +80,34 @@ const UpdateProduct = () => {
       if (!file) {
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `products/${product_id}`,
-          product
+          product,
+          config
         );
         if (result) {
           window.location.href = "/admin/products";
         }
       } else {
         await axios.delete(
-          import.meta.env.VITE_API_BASE + `delete-image/${product.image_name}`
+          import.meta.env.VITE_API_BASE + `delete-image/${product.image_name}`,
+          config
         );
         const imageResponse = await axios.post(
           import.meta.env.VITE_API_BASE + `upload-image`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
+          },
+          config
         );
         const productDto = {
           ...product,
           image: imageResponse.data.link,
           image_name: imageResponse.data.filename,
         };
-        // console.log(productDto);
         const result = await axios.put(
           import.meta.env.VITE_API_BASE + `products/${product_id}`,
-          productDto
+          productDto,
+          config
         );
         if (result) {
           window.location.href = "/admin/products";
