@@ -45,6 +45,8 @@ import UpdateCategory from "./admin/page/category/UpdateCategory";
 import BrandList from "./admin/page/brand/BrandList";
 import CreateBrand from "./admin/page/brand/CreateBrand";
 import UpdateBrand from "./admin/page/brand/UpdateBrand";
+// sliders
+import Sliders from "./admin/page/sliders/Slider";
 // product
 import ProductList from "./admin/page/product/ProductList";
 import CreateProduct from "./admin/page/product/CreateProduct";
@@ -178,6 +180,16 @@ function App() {
                           </RoleRoute>
                         }
                       />
+                      
+                      <Route
+                        path="Sliders"
+                        element={
+                          <RoleRoute allowedRoles={["ADMIN"]}>
+                            <Sliders />
+                          </RoleRoute>
+                        }
+                      />
+
                       <Route
                         path="products"
                         element={

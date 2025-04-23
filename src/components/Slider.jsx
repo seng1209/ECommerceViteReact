@@ -1,265 +1,70 @@
-import Carousel from "react-bootstrap/Carousel";
+import React, { useState, useEffect } from "react";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
-const Slider = () => {
+function Home() {
+  const [sliders, setSliders] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/v1/sliders")
+      .then((response) => response.json())
+      .then((data) => setSliders(data))
+      .catch((error) => console.error("Error fetching sliders:", error));
+  }, []);
+
   return (
-    <>
-      <section className="section-slide">
+    <div>
+      <section className="section-slide" style={{ marginTop: "100px" }}>
         <div className="wrap-slick1">
           <div className="slick1">
-            <Carousel>
-              <Carousel.Item interval={1000}>
-                <div
-                  className="item-slick1"
-                  style={{ backgroundImage: "url(images/slide-01.jpg)" }}
-                >
-                  <div className="container h-full">
-                    <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="fadeInDown"
-                        data-delay={0}
-                      >
-                        <span className="ltext-101 cl2 respon2">
-                          Women Collection 2018
-                        </span>
-                      </div>
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="fadeInUp"
-                        data-delay={800}
-                      >
-                        <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                          NEW SEASON
-                        </h2>
-                      </div>
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="zoomIn"
-                        data-delay={1600}
-                      >
-                        <a
-                          href="product.html"
-                          className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                        >
-                          Shop Now
-                        </a>
+            <Swiper
+              modules={[Navigation, Pagination, Scrollbar, A11y]}
+              spaceBetween={50}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              loop={true}
+            >
+              {sliders.map((slider) => (
+                <SwiperSlide key={slider.id}>
+                  <div
+                    className="item-slick1"
+                    style={{
+                      backgroundImage: `url(http://localhost:8000/${slider.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                      width: "100%",
+                      height: "800px",
+                    }}
+                  >
+                    <div className="container h-full">
+                      <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
+                        <div className="layer-slick1 animated">
+                          <span className="ltext-101 cl2 respon2">
+                            {slider.name}
+                          </span>
+                        </div>
+                        <div className="layer-slick1 animated">
+                          <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
+                            {slider.description}
+                          </h2>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Carousel.Item>
-              <Carousel.Item interval={1000}>
-                <div
-                  className="item-slick1"
-                  style={{ backgroundImage: "url(images/slide-02.jpg)" }}
-                >
-                  <div className="container h-full">
-                    <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="rollIn"
-                        data-delay={0}
-                      >
-                        <span className="ltext-101 cl2 respon2">
-                          Men New-Season
-                        </span>
-                      </div>
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="lightSpeedIn"
-                        data-delay={800}
-                      >
-                        <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                          Jackets &amp; Coats
-                        </h2>
-                      </div>
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="slideInUp"
-                        data-delay={1600}
-                      >
-                        <a
-                          href="product.html"
-                          className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                        >
-                          Shop Now
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Carousel.Item>
-              <Carousel.Item interval={1000}>
-                <div
-                  className="item-slick1"
-                  style={{ backgroundImage: "url(images/slide-03.jpg)" }}
-                >
-                  <div className="container h-full">
-                    <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="rotateInDownLeft"
-                        data-delay={0}
-                      >
-                        <span className="ltext-101 cl2 respon2">
-                          Men Collection 2018
-                        </span>
-                      </div>
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="rotateInUpRight"
-                        data-delay={800}
-                      >
-                        <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                          New arrivals
-                        </h2>
-                      </div>
-                      <div
-                        className="layer-slick1 animated visible-false"
-                        data-appear="rotateIn"
-                        data-delay={1600}
-                      >
-                        <a
-                          href="product.html"
-                          className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                        >
-                          Shop Now
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Carousel.Item>
-            </Carousel>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </section>
-      {/* Slider */}
-      {/* <section className="section-slide">
-        <div className="wrap-slick1">
-          <div className="slick1">
-            <div
-              className="item-slick1"
-              style={{ backgroundImage: "url(images/slide-01.jpg)" }}
-            >
-              <div className="container h-full">
-                <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="fadeInDown"
-                    data-delay={0}
-                  >
-                    <span className="ltext-101 cl2 respon2">
-                      Women Collection 2018
-                    </span>
-                  </div>
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="fadeInUp"
-                    data-delay={800}
-                  >
-                    <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                      NEW SEASON
-                    </h2>
-                  </div>
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="zoomIn"
-                    data-delay={1600}
-                  >
-                    <a
-                      href="product.html"
-                      className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                    >
-                      Shop Now
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="item-slick1"
-              style={{ backgroundImage: "url(images/slide-02.jpg)" }}
-            >
-              <div className="container h-full">
-                <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="rollIn"
-                    data-delay={0}
-                  >
-                    <span className="ltext-101 cl2 respon2">
-                      Men New-Season
-                    </span>
-                  </div>
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="lightSpeedIn"
-                    data-delay={800}
-                  >
-                    <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                      Jackets &amp; Coats
-                    </h2>
-                  </div>
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="slideInUp"
-                    data-delay={1600}
-                  >
-                    <a
-                      href="product.html"
-                      className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                    >
-                      Shop Now
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="item-slick1"
-              style={{ backgroundImage: "url(images/slide-03.jpg)" }}
-            >
-              <div className="container h-full">
-                <div className="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="rotateInDownLeft"
-                    data-delay={0}
-                  >
-                    <span className="ltext-101 cl2 respon2">
-                      Men Collection 2018
-                    </span>
-                  </div>
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="rotateInUpRight"
-                    data-delay={800}
-                  >
-                    <h2 className="ltext-201 cl2 p-t-19 p-b-43 respon1">
-                      New arrivals
-                    </h2>
-                  </div>
-                  <div
-                    className="layer-slick1 animated visible-false"
-                    data-appear="rotateIn"
-                    data-delay={1600}
-                  >
-                    <a
-                      href="product.html"
-                      className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                    >
-                      Shop Now
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
-    </>
+    </div>
   );
-};
+}
 
-export default Slider;
+export default Home;

@@ -26,7 +26,7 @@ const Header = () => {
                   Help &amp; FAQs
                 </a>
                 <a onClick={logout} className="flex-c-m trans-04 p-lr-25">
-                  Logout
+                  Admin
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                   EN
@@ -41,7 +41,7 @@ const Header = () => {
             <nav className="limiter-menu-desktop container">
               {/* Logo desktop */}
               <a href="#" className="logo">
-                <img src="images/icons/logo-01.png" alt="IMG-LOGO" />
+                <img src="images/icons/brand4.png" alt="IMG-LOGO" />
               </a>
               {/* Menu desktop */}
               <div className="menu-desktop">
@@ -106,7 +106,7 @@ const Header = () => {
           {/* Logo moblie */}
           <div className="logo-mobile">
             <a href="index.html">
-              <img src="images/icons/logo-01.png" alt="IMG-LOGO" />
+              <img src="images/icons/brand4.png" alt="IMG-LOGO" />
             </a>
           </div>
           {/* Icon header */}

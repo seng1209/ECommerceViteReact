@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TbCategoryPlus } from "react-icons/tb";
 import { SiBrandfolder } from "react-icons/si";
@@ -78,6 +77,20 @@ const Slidebar = () => {
                     <SiBrandfolder size={22} />
                   </span>
                   <span className="hide-menu">Brand</span>
+                </Link>
+              </li>
+              <li className="sidebar-item">
+                <Link
+                  className="sidebar-link"
+                  //   href="./index.html"
+                  to="admin/Sliders"
+                  aria-expanded="false"
+                >
+                  <span>
+                    {/* <i className="ti ti-layout-dashboard" /> */}
+                    <TbCategoryPlus size={22} />
+                  </span>
+                  <span className="hide-menu">Slider</span>
                 </Link>
               </li>
               <li className="sidebar-item">
