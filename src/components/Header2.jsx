@@ -26,7 +26,7 @@ const Header2 = () => {
                 </a>
                 <a onClick={logout} className="flex-c-m trans-04 p-lr-25">
                   {" "}
-                  Logout
+                  Admin
                 </a>
                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                   {" "}
