@@ -3,6 +3,7 @@ import Header2 from "../components/Header2";
 import Cart from "../components/Cart";
 import Breadcrumb from "../components/Breadcrumb";
 import RelatedProduct from "../components/RelatedProduct";
+import Footer from "../components/Footer";
 
 const ProductDetail = () => {
   return (
@@ -749,6 +750,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

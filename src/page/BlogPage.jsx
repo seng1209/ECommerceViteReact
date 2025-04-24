@@ -1,5 +1,6 @@
 import Cart from "../components/Cart";
 import Header2 from "../components/Header2";
+import Footer from "../components/Footer";
 
 const BlogPage = () => {
   return (
@@ -411,6 +412,7 @@ const BlogPage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

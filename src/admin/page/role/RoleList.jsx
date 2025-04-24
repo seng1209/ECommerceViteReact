@@ -3,11 +3,22 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const RoleList = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [roles, setRoles] = useState([]);
 
   const getRoles = async () => {
     try {
-      const results = await axios.get(import.meta.env.VITE_API_BASE + `roles`);
+      const results = await axios.get(
+        import.meta.env.VITE_API_BASE + `roles`,
+        config
+      );
       setRoles(results.data.data);
     } catch (error) {
       console.log(error);
@@ -50,7 +61,7 @@ const RoleList = () => {
                 <td>{obj.role_id}</td>
                 <td>{obj.role}</td>
                 <td>{obj.description}</td>
-                <td className="d-flex">
+                {/* <td className="d-flex">
                   <Link
                     to={`update/${obj.role}`}
                     className="btn btn-warning m-1"
@@ -63,7 +74,7 @@ const RoleList = () => {
                   >
                     Delete
                   </button>
-                </td>
+                </td> */}
               </tr>
             );
           })}

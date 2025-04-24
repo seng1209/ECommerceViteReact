@@ -3,9 +3,9 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from "axios";
 import Header2 from "../components/Header2";
 import Cart from "../components/Cart";
+import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
 import { useCart } from "../context/CartContext";
-import PayPayButton from "../paypal/PayPalButton";
 import { jwtDecode } from "jwt-decode";
 
 const ShoppingPage = () => {
@@ -113,7 +113,6 @@ const ShoppingPage = () => {
         orderDto,
         config
       );
-      // console.log(orderDto);
       let orderProductDto = "";
       await cartItems.forEach((item) => {
         orderProductDto = {
@@ -123,7 +122,6 @@ const ShoppingPage = () => {
           quantity: item.quantity,
           amount: Number(item.quantity) * Number(item.price),
         };
-        // console.log(orderProductDto);
         axios.post(
           import.meta.env.VITE_API_BASE + `order-details`,
           orderProductDto,
@@ -135,26 +133,23 @@ const ShoppingPage = () => {
         user_id: user_id,
         order_id: orderResponse.data.data.order_id,
       };
-      // console.log(shipmentDto);
       const shipemntResponse = await axios.post(
         import.meta.env.VITE_API_BASE + `shipments`,
         shipmentDto,
         config
       );
-      // console.log(shipemntResponse);
-      // getShipmentPrice(1);
       const paymentDto = {
         ...payment,
         payment_method_id: 1,
         order_id: orderResponse.data.data.order_id,
         amount: getTotalPrice(),
       };
-      // console.log(paymentDto);
       const paymentResponse = await axios.post(
         import.meta.env.VITE_API_BASE + `payments`,
         paymentDto,
         config
       );
+      
       setTimeout(function () {
         localStorage.removeItem("cartItems");
         window.location.href = "/";
@@ -378,21 +373,16 @@ const ShoppingPage = () => {
                         );
 
                         process();
-
-                        // setTimeout(function () {
-                        //   localStorage.removeItem("cartItems");
-                        //   window.location.href = "/";
-                        // }, 3000);
                       });
                     }}
                   />
                 </PayPalScriptProvider>
-                {/* <PayPayButton subtotal={getTotalPrice().toFixed(2)} /> */}
               </div>
             </div>
           </div>
         </div>
       </form>
+      <Footer />
     </>
   );
 };

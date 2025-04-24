@@ -5,10 +5,9 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 function Login() {
-  //   localStorage.removeItem("token");
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,7 +30,8 @@ function Login() {
       window.location.href = "/admin";
     } catch (err) {
       console.error(err);
-      alert("Login failed");
+      setError("Invalid Username or Password!");
+      // alert("Login failed");
     }
   };
 
@@ -63,7 +63,9 @@ function Login() {
                         alt=""
                       />
                     </a>
-                    <p className="text-center">Your Social Campaigns</p>
+                    <p className="text-center text-danger">
+                      {error ? error : ""}
+                    </p>
                     <form onSubmit={login}>
                       <div className="mb-3">
                         <label
@@ -73,6 +75,7 @@ function Login() {
                           Username
                         </label>
                         <input
+                          required
                           type="text"
                           className="form-control"
                           id="exampleInputEmail1"
@@ -88,6 +91,7 @@ function Login() {
                           Password
                         </label>
                         <input
+                          required
                           type="password"
                           className="form-control"
                           id="exampleInputPassword1"

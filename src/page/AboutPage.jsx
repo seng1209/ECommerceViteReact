@@ -1,5 +1,6 @@
 import Header2 from "../components/Header2";
 import Cart from "../components/Cart";
+import Footer from "../components/Footer";
 
 const AboutPage = () => {
   return (
@@ -100,6 +101,7 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 };

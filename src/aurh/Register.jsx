@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+  const [error, setError] = useState();
+  const [fileError, setFileError] = useState();
   const [user, setUser] = useState([]);
-
   const [file, setFile] = useState();
 
   const handleFileChange = (e) => {
@@ -21,23 +22,25 @@ const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const imageResponse = await axios.post(
-        import.meta.env.VITE_API_BASE + `upload-image`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-      const userDto = {
-        ...user,
-        image: imageResponse.data.link,
-        image_name: imageResponse.data.filename,
-      };
-      const result = await axios.post(
-        import.meta.env.VITE_API_BASE + `register`,
-        userDto
-      );
-      result ? (window.location.href = "/login") : "";
+      if (passwordValidator(user.password) && fileValidator(file)) {
+        const imageResponse = await axios.post(
+          import.meta.env.VITE_API_BASE + `upload-image`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+        const userDto = {
+          ...user,
+          image: imageResponse.data.link,
+          image_name: imageResponse.data.filename,
+        };
+        const result = await axios.post(
+          import.meta.env.VITE_API_BASE + `register`,
+          userDto
+        );
+        result ? (window.location.href = "/login") : "";
+      }
     } catch (err) {
       if (err.response) {
         console.log("Error Response: " + err.response.data);
@@ -45,6 +48,30 @@ const Register = () => {
       } else {
         console.log("Error: " + err.message);
       }
+    }
+  };
+
+  const passwordValidator = (password) => {
+    try {
+      if (password.length < 6) {
+        setError("The password field must be at least 6 characters.");
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const fileValidator = (file) => {
+    try {
+      if (!file) {
+        setFileError("Image is required.");
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -66,17 +93,6 @@ const Register = () => {
               <div className="col-md-8 col-lg-6 col-xxl-3">
                 <div className="card mb-0">
                   <div className="card-body">
-                    {/* <a
-                      href="./index.html"
-                      className="text-nowrap logo-img text-center d-block py-3 w-100"
-                    >
-                      <img
-                        src="../assets/images/logos/dark-logo.svg"
-                        width={180}
-                        alt=""
-                      />
-                    </a>
-                    <p className="text-center">Your Social Campaigns</p> */}
                     <form onSubmit={(e) => onSubmit(e)}>
                       {/* Name */}
                       <div className="mb-3">
@@ -84,6 +100,7 @@ const Register = () => {
                           Name
                         </label>
                         <input
+                          required
                           type="text"
                           className="form-control"
                           id="name"
@@ -98,6 +115,7 @@ const Register = () => {
                           Email Address
                         </label>
                         <input
+                          required
                           type="email"
                           className="form-control"
                           id="email"
@@ -112,12 +130,14 @@ const Register = () => {
                           Password
                         </label>
                         <input
+                          required
                           type="password"
                           className="form-control"
                           id="password"
                           name="password"
                           onChange={(e) => handleInputChange(e)}
                         />
+                        <div className="text-danger">{error ? error : ""}</div>
                       </div>
 
                       {/* Phone */}
@@ -126,7 +146,8 @@ const Register = () => {
                           Phone Number
                         </label>
                         <input
-                          type="text"
+                          required
+                          type="tel"
                           className="form-control"
                           id="phone"
                           name="phone"
@@ -140,6 +161,7 @@ const Register = () => {
                           Address
                         </label>
                         <textarea
+                          required
                           className="form-control"
                           id="address"
                           rows="2"
@@ -154,6 +176,7 @@ const Register = () => {
                           Upload Profile Image
                         </label>
                         <input
+                          required
                           type="file"
                           className="form-control"
                           id="image"
@@ -161,6 +184,9 @@ const Register = () => {
                           name="file"
                           onChange={(e) => handleFileChange(e)}
                         />
+                        <div className="text-danger">
+                          {fileError ? fileError : ""}
+                        </div>
                       </div>
 
                       {/* Submit Button */}

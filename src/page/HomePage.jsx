@@ -6,6 +6,7 @@ import Slider from "../components/Slider";
 import Banner from "../components/Banner";
 import Cart from "../components/Cart";
 import Model1 from "../components/Model1";
+import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 
 const HomePage = () => {
@@ -360,6 +361,7 @@ const HomePage = () => {
           </div>
         </div>
       </section>
+      <Footer />
       <Model1 />
     </>
   );

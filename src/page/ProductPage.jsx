@@ -4,6 +4,7 @@ import axios from "axios";
 import Header2 from "../components/Header2";
 import Cart from "../components/Cart";
 import Model1 from "../components/Model1";
+import Footer from "../components/Footer";
 import { useCart } from "../context/CartContext";
 
 const ProductPage = () => {
@@ -356,6 +357,7 @@ const ProductPage = () => {
           </div>
         </div>
       </section>
+      <Footer />
       <Model1 />
     </>
   );

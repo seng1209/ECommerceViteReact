@@ -2,6 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const CreateRole = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const [role, setRole] = useState([]);
 
   const handleInputChange = (e) => {
@@ -13,7 +21,8 @@ const CreateRole = () => {
     try {
       const result = await axios.post(
         import.meta.env.VITE_API_BASE + `roles`,
-        role
+        role,
+        config
       );
       result ? (window.location.href = "/admin/roles") : "";
     } catch (error) {

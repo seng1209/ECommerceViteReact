@@ -8,16 +8,6 @@ import RoleRoute from "./aurh/RoleRoute";
 /*
   components
 */
-import Header from "./components/Header";
-import Header2 from "./components/Header2";
-import Slider from "./components/Slider";
-import Cart from "./components/Cart";
-import Banner from "./components/Banner";
-import BackToTop from "./components/BackToTop";
-import Breadcrumb from "./components/Breadcrumb";
-import TitlePage from "./components/TitlePage";
-import Footer from "./components/Footer";
-import Model1 from "./components/Model1";
 /*
   page
 */
@@ -427,13 +417,6 @@ function App() {
                 <Route path="product-detail" element={<ProductDetail />} />
               </Route>
             </Routes>
-            {/* <Footer /> */}
-            {page != "admin" && page != "login" && page != "register" ? (
-              <Footer />
-            ) : (
-              ""
-            )}
-            {/* <Model1 /> */}
           </>
         )}
       </Router>
