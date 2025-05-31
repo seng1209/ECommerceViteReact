@@ -32,7 +32,8 @@ const RoleList = () => {
   const handleDeleteRole = async (role) => {
     try {
       const result = await axios.delete(
-        import.meta.env.VITE_API_BASE + `roles/${role}`
+        import.meta.env.VITE_API_BASE + `roles/${role}`,
+        config
       );
       result ? window.location.reload() : "";
     } catch (error) {
@@ -61,20 +62,20 @@ const RoleList = () => {
                 <td>{obj.role_id}</td>
                 <td>{obj.role}</td>
                 <td>{obj.description}</td>
-                {/* <td className="d-flex">
-                  <Link
+                <td className="d-flex">
+                  {/* <Link
                     to={`update/${obj.role}`}
                     className="btn btn-warning m-1"
                   >
                     Update
-                  </Link>
+                  </Link> */}
                   <button
                     className="btn btn-danger m-1"
                     onClick={() => handleDeleteRole(obj.role)}
                   >
                     Delete
                   </button>
-                </td> */}
+                </td>
               </tr>
             );
           })}

@@ -1,10 +1,40 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Header = () => {
   const navigate = useNavigate();
 
+  const [user, setUser] = useState([]);
+
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const getUser = async () => {
+    try {
+      const result = await axios.get(
+        import.meta.env.VITE_API_BASE + `users/${username}`,
+        config
+      );
+      setUser(result.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   const logout = () => {
     localStorage.removeItem("token"); // clear token
+    localStorage.removeItem("username"); // clear username
     window.location.href = "/login";
   };
 
@@ -35,13 +65,13 @@ const Header = () => {
             id="navbarNav"
           >
             <ul className="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-              <a
+              {/* <a
                 href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
                 target="_blank"
                 className="btn btn-primary"
               >
-                Download Free
-              </a>
+                Profile
+              </a> */}
               <li className="nav-item dropdown">
                 <a
                   className="nav-link nav-icon-hover"
@@ -51,8 +81,8 @@ const Header = () => {
                   aria-expanded="false"
                 >
                   <img
-                    src="../assets/images/profile/user-1.jpg"
-                    alt=""
+                    src={user.image}
+                    alt={user.image}
                     width={35}
                     height={35}
                     className="rounded-circle"

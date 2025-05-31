@@ -3,6 +3,14 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const UpdateUser = () => {
+  const token = localStorage.getItem("token");
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   const { username } = useParams();
 
   const [user, setUser] = useState([]);
@@ -10,7 +18,8 @@ const UpdateUser = () => {
   const getUser = async (username) => {
     try {
       const result = await axios.get(
-        import.meta.env.VITE_API_BASE + `users/${username}`
+        import.meta.env.VITE_API_BASE + `users/${username}`,
+        config
       );
       setUser(result.data.data);
     } catch (error) {

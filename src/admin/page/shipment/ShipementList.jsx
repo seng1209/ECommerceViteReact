@@ -44,7 +44,7 @@ const PaymentList = () => {
   return (
     <div className="container-fluid">
       <Link to="create" className="btn btn-primary m-1">
-        Create Payment
+        Create new Shipment
       </Link>
       <table className="table">
         <thead>

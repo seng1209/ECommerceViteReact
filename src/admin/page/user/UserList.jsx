@@ -76,13 +76,13 @@ const UserList = () => {
                 <td>{obj.email}</td>
                 <td>{obj.phone}</td>
                 <td>{obj.address}</td>
-                {/* <td className="d-flex">
-                  <Link
+                <td className="d-flex">
+                  {/* <Link
                     to={`update/${obj.username}`}
                     className="btn btn-warning m-1"
                   >
                     Update
-                  </Link>
+                  </Link> */}
                   <button
                     className="btn btn-danger m-1"
                     onClick={() =>
@@ -91,7 +91,7 @@ const UserList = () => {
                   >
                     Delete
                   </button>
-                </td> */}
+                </td>
               </tr>
             );
           })}

@@ -19,18 +19,17 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/login", {
+      const res = await axios.post(import.meta.env.VITE_API_BASE + "login", {
         username,
         password,
       });
 
       localStorage.setItem("token", res.data.access_token);
-      // ✅ redirect to the page user originally wanted
-      //   navigate(from, { replace: true });
       window.location.href = "/admin";
     } catch (err) {
       console.error(err);
-      setError("Invalid Username or Password!");
+      if (err.response.status != 429) setError("Invalid Username or Password!");
+      else setError("Your account has been block at 5mins");
       // alert("Login failed");
     }
   };
@@ -99,7 +98,7 @@ function Login() {
                         />
                       </div>
                       <div className="d-flex align-items-center justify-content-between mb-4">
-                        <div className="form-check">
+                        {/* <div className="form-check">
                           <input
                             className="form-check-input primary"
                             type="checkbox"
@@ -116,20 +115,18 @@ function Login() {
                         </div>
                         <a className="text-primary fw-bold" href="./index.html">
                           Forgot Password ?
-                        </a>
+                        </a> */}
                       </div>
                       <button
-                        // href="./index.html"
                         type="submit"
                         className="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2"
                       >
                         Sign In
                       </button>
                       <div className="d-flex align-items-center justify-content-center">
-                        <p className="fs-4 mb-0 fw-bold">New to Modernize?</p>
+                        <p className="fs-4 mb-0 fw-bold">Create new Account?</p>
                         <Link
                           className="text-primary fw-bold ms-2"
-                          //   href="./authentication-register.html"
                           to={"/register"}
                         >
                           Create an account
@@ -144,12 +141,6 @@ function Login() {
         </div>
       </div>
     </>
-
-    // <form onSubmit={login}>
-    //   <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-    //   <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-    //   <button type="submit">Login</button>
-    // </form>
   );
 }
 
